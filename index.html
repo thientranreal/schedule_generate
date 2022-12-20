@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./src/js/jquery.js" defer></script>
+    <script src="./src/js/script.js" defer></script>
+    <link rel="stylesheet" href="./src/css/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="wrapper">
+        <form id="input_data">
+
+            <div class="input_field">
+                <label for="subject_title">Tên môn học: </label>
+                <input type="text" id="subject_title">
+            </div>
+            
+            <div class="input_field">
+                <label for="week_day">Thứ trong tuần: </label>
+                <select id="week_day">
+                    <option value="2">Thứ 2</option>
+                    <option value="3">Thứ 3</option>
+                    <option value="4">Thứ 4</option>
+                    <option value="5">Thứ 5</option>
+                    <option value="6">Thứ 6</option>
+                    <option value="7">Thứ 7</option>
+                </select>
+
+                <label for="class_start">Tiết bắt đầu: </label>
+                <select id="class_start">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+
+                <label for="duration">Số tiết: </label>
+                <select id="duration">
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+
+            <div class="input_field">
+                <label for="room_number">Số phòng: </label>
+                <input type="text" id="room_number">
+            </div>
+
+            <div id="input_button">
+                <button class="btn" type="button">Thêm</button>
+                <button class="btn" type="reset">Reset</button>
+            </div>
+        </form>
+
+        <div id="show_schedule">
+            <div class="col">
+                <div class="row"></div>
+                <div class="row">Tiết 1</div>
+                <div class="row">Tiết 2</div>
+                <div class="row">Tiết 3</div>
+                <div class="row">Tiết 4</div>
+                <div class="row">Tiết 5</div>
+                <div class="row">Tiết 6</div>
+                <div class="row">Tiết 7</div>
+                <div class="row">Tiết 8</div>
+                <div class="row">Tiết 9</div>
+                <div class="row">Tiết 10</div>
+            </div>
+
+            <div class="col" day="monday">
+                <div class="row">Thứ 2</div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+            </div>
+
+            <div class="col" day="tuesday">
+                <div class="row">Thứ 3</div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+            </div>
+
+            <div class="col" day="wednesday">
+                <div class="row">Thứ 4</div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+            </div>
+
+            <div class="col" day="thursday">
+                <div class="row">Thứ 5</div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+            </div>
+
+            <div class="col" day="friday">
+                <div class="row">Thứ 6</div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+            </div>
+            
+            <div class="col" day="saturday">
+                <div class="row">Thứ 7</div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
