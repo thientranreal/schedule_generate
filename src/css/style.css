@@ -52,3 +52,27 @@ input, select {
     display: flex;
     justify-content: center;
 }
+@media screen and (max-width: 874px) {
+    #input_data {
+        font-size: 0.8rem;
+    }
+    #time {
+        display: flex;
+        flex-direction: column;
+    }
+    #show_schedule {
+        padding-top: 15rem;
+    }
+    .row {
+        width: 6rem;
+    }
+}
+@media screen and (max-width: 400px) {
+    .row {
+        width: 3rem;
+        font-size: 0.7rem;
+    }
+    #show_schedule {
+        padding-top: 16.5rem;
+    }
+}

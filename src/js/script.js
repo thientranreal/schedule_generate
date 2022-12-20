@@ -161,7 +161,12 @@ $(document).ready(function() {
     function makeSchedule(time_array, subject_title) {
         let $show_schedule = $wrapper.find('#show_schedule');
         let $col = $show_schedule.find('.col');
-        let index, $row, $current_col, margin = 0.2 /*rem*/, height = 3 /*rem*/, new_height;
+        let index, $row, new_height;
+
+        // get height, margin from current size
+        $row = getComputedStyle(document.querySelector('.row'));
+        let height = Number($row.height.replace('px', ''));
+        let margin = Number($row.marginBottom.replace('px', ''));
 
         for (let time of time_array) {
             // if time is show on schedule then exit
@@ -170,10 +175,9 @@ $(document).ready(function() {
             }
             // get week day of time then minus 1 for the index of col
             index = time.getWeekday() - 1;
-            $current_col = $col.eq(index);
     
             // get row of the current column
-            $row = $current_col.find('.row');
+            $row = $col.eq(index).find('.row');
             // make the period on schedule disappear
             for (index = time.getClass_start() + 1; index <= time.getClass_end(); index++) {
                 $row.eq(index).css({
@@ -185,7 +189,7 @@ $(document).ready(function() {
             index = time.getClass_end() - time.getClass_start() + 1;
             new_height = height * index + margin * (index - 1);
             $row.eq(time.getClass_start()).css({
-                'height' : `${new_height}rem`,
+                'height' : `${new_height}px`,
                 'background-color' : '#8EE4AF',
                 'color' : '#05386B'
             }).html(`${subject_title}\nPhòng: ${time.getRoom_number()}`);
