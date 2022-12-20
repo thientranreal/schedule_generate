@@ -229,7 +229,7 @@ $(document).ready(function() {
             time.setWeekday($select.filter('select[id=week_day]').val());
 
             temp = $select.filter('select[id=class_start]').val();
-            if (temp === 10) {
+            if (temp == 10) {
                 alert('Tiết bắt đầu không hợp lệ.');
                 return;
             }
@@ -256,7 +256,7 @@ $(document).ready(function() {
             time.setWeekday(temp);
 
             temp = $select.filter('select[id=class_start]').val();
-            if (temp === 10) {
+            if (temp == 10) {
                 alert('Tiết bắt đầu không hợp lệ.');
                 return;
             }
