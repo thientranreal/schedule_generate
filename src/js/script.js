@@ -209,7 +209,8 @@ $(document).ready(function() {
         
         let temp = $input_field.filter('input[id=subject_title]').val().trim();
         // if subject is not existed then create new Subject
-        let index = subjectExist(subjects, temp); 
+        let index = subjectExist(subjects, temp);
+        let time = new Time();
         if (index < 0) {
             let subject = new Subject();
     
@@ -219,7 +220,6 @@ $(document).ready(function() {
                 return;
             }
     
-            let time = new Time();
             temp = $input_field.filter('input[id=room_number]').val().trim().toUpperCase();
             if (!time.setRoom_number(temp)) {
                 alert('Phòng không hợp lệ.');
@@ -229,6 +229,10 @@ $(document).ready(function() {
             time.setWeekday($select.filter('select[id=week_day]').val());
 
             temp = $select.filter('select[id=class_start]').val();
+            if (temp === 10) {
+                alert('Tiết bắt đầu không hợp lệ.');
+                return;
+            }
             time.setClass_start(temp);
             
             temp = Number(temp) + Number($select.filter('select[id=duration]').val()) - 1;
@@ -248,18 +252,20 @@ $(document).ready(function() {
         }
         else { // if subject is existed
 
-            let time = new Time();
-
             temp = $select.filter('select[id=week_day]').val();
             time.setWeekday(temp);
 
             temp = $select.filter('select[id=class_start]').val();
+            if (temp === 10) {
+                alert('Tiết bắt đầu không hợp lệ.');
+                return;
+            }
             time.setClass_start(temp);
 
             temp = Number(temp) + Number($select.filter('select[id=duration]').val()) - 1;
             time.setClass_end(temp);
 
-            temp = $input_field.filter('input[id=room_number]').val().trim();
+            temp = $input_field.filter('input[id=room_number]').val().trim().toUpperCase();
             if (!time.setRoom_number(temp)) {
                 alert('Phòng không hợp lệ.');
                 $input_field.filter('input[id=room_number]').val('').focus();
