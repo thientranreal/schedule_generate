@@ -13,9 +13,10 @@
     <div id="wrapper">
         <form id="input_data">
 
-            <div class="input_field">
+            <div class="input_field" style="position: relative;">
                 <label for="subject_title">Tên môn học: </label>
                 <input type="text" id="subject_title">
+                <ul id="search_box"></ul>
             </div>
             
             <div class="input_field" id="time">
@@ -56,8 +57,10 @@
             </div>
 
             <div id="input_button">
-                <button class="btn" type="button">Thêm</button>
+                <button class="btn" type="button" id="add_subject">Thêm</button>
                 <button class="btn" type="reset">Reset</button>
+                <button class="btn" type="button" id="delete_subject">Xóa</button>
+                <!-- <button class="btn" type="button" id="edit_subject">Sửa</button> -->
             </div>
         </form>
 
@@ -76,7 +79,7 @@
                 <div class="row">Tiết 10</div>
             </div>
 
-            <div class="col" day="monday">
+            <div class="col">
                 <div class="row">Thứ 2</div>
                 <div class="row"></div>
                 <div class="row"></div>
@@ -90,7 +93,7 @@
                 <div class="row"></div>
             </div>
 
-            <div class="col" day="tuesday">
+            <div class="col">
                 <div class="row">Thứ 3</div>
                 <div class="row"></div>
                 <div class="row"></div>
@@ -104,7 +107,7 @@
                 <div class="row"></div>
             </div>
 
-            <div class="col" day="wednesday">
+            <div class="col">
                 <div class="row">Thứ 4</div>
                 <div class="row"></div>
                 <div class="row"></div>
@@ -118,7 +121,7 @@
                 <div class="row"></div>
             </div>
 
-            <div class="col" day="thursday">
+            <div class="col">
                 <div class="row">Thứ 5</div>
                 <div class="row"></div>
                 <div class="row"></div>
@@ -132,7 +135,7 @@
                 <div class="row"></div>
             </div>
 
-            <div class="col" day="friday">
+            <div class="col">
                 <div class="row">Thứ 6</div>
                 <div class="row"></div>
                 <div class="row"></div>
@@ -146,7 +149,7 @@
                 <div class="row"></div>
             </div>
             
-            <div class="col" day="saturday">
+            <div class="col">
                 <div class="row">Thứ 7</div>
                 <div class="row"></div>
                 <div class="row"></div>

@@ -23,6 +23,25 @@ input, select {
 .input_field, #input_button {
     padding-top: 0.5rem;
 }
+#search_box {
+    position: absolute;
+    width: 47%;
+    left: 6.4rem;
+    list-style-type: none;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 0 0 5% 5%;
+    overflow-y: scroll;
+    max-height: 10rem;
+}
+#search_box > li {
+    color: var(--font-color);
+    padding: 0.6rem;
+    cursor: pointer;
+}
+#search_box > li:hover {
+    border-bottom: 1.75px var(--font-color) solid;
+}
 .btn {
     padding: 0.5rem;
     border-radius: 10%;
@@ -66,13 +85,23 @@ input, select {
     .row {
         width: 6rem;
     }
+    #search_box {
+        width: 67%;
+        left: 5.1rem;
+    }
 }
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 710px) {
     .row {
         width: 3rem;
         font-size: 0.7rem;
     }
     #show_schedule {
         padding-top: 16.5rem;
+    }
+}
+@media screen and (max-width: 511px) {
+    #search_box {
+        width: 10.5rem;
+        left: 0;
     }
 }

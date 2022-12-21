@@ -199,11 +199,35 @@ $(document).ready(function() {
         }
     }
 
+    // delete subject on schedule
+    function deleteSchedule(subject) {
+        let $show_schedule = $wrapper.find('#show_schedule');
+        let $col = $show_schedule.find('.col');
+        let index, $row;
+
+        for (let time of subject.getTime_array()) {
+            // get week day of time then minus 1 for the index of col
+            index = time.getWeekday() - 1;
+
+            // get row of the current column
+            $row = $col.eq(index).find('.row');
+            
+            // reset inline css for delete subject
+            for (index = time.getClass_start(); index <= time.getClass_end(); index++) {
+                // delete text
+                if (index == time.getClass_start()) {
+                    $row.eq(index).html('');
+                }
+                $row.eq(index).attr('style','');
+            }
+        }
+    }
+
     // add click for thêm môn học
-    $wrapper.find('#input_button > button[type=button]').on('click', function() {
+    $wrapper.find('#input_button > #add_subject').on('click', function() {
         //#region query selector
         let $form = $(this).closest('form');
-        let $input_field = $form.find('input[type=text');
+        let $input_field = $form.find('input[type=text]');
         let $select = $form.find('select');
         //#endregion
         
@@ -236,8 +260,11 @@ $(document).ready(function() {
             time.setClass_start(temp);
             
             temp = Number(temp) + Number($select.filter('select[id=duration]').val()) - 1;
-            time.setClass_end(temp);
-            
+            if(!time.setClass_end(temp)) {
+                alert('Tiết kết thúc không hợp lệ.');
+                return;
+            }
+
             // check time is valid or not
             if(checkTrungLich(subjects, time)) {
                 alert('Bị trùng lịch. Không thêm môn học thành công.');
@@ -263,7 +290,10 @@ $(document).ready(function() {
             time.setClass_start(temp);
 
             temp = Number(temp) + Number($select.filter('select[id=duration]').val()) - 1;
-            time.setClass_end(temp);
+            if(!time.setClass_end(temp)) {
+                alert('Tiết kết thúc không hợp lệ.');
+                return;
+            }
 
             temp = $input_field.filter('input[id=room_number]').val().trim().toUpperCase();
             if (!time.setRoom_number(temp)) {
@@ -285,5 +315,115 @@ $(document).ready(function() {
         // Generate schedule
         makeSchedule(subjects[subjects.length - 1].getTime_array(), subjects[subjects.length - 1].getSubject_title());
     });
+
+    // delete subject
+    $wrapper.find('#input_button > #delete_subject').on('click', function() {
+        //#region query selector
+        let $form = $(this).closest('form');
+        let $input_field = $form.find('#subject_title');
+        //#endregion
+
+        $input_field.val($input_field.val().trim());
+        if ($input_field.val() === '') {
+            alert('Chưa nhập tên môn học cần xóa.');
+            return;
+        }
+
+        let index = subjectExist(subjects, $input_field.val());
+        if (index < 0) {
+            alert('Tên môn học không tồn tại.');
+            return;
+        }
+        else {
+            // xóa trên thời khóa biểu
+            deleteSchedule(subjects[index]);
+            // xóa phần tử mà tìm thấy
+            subjects.splice(index, 1);
+            alert('Xóa môn học thành công.');
+        }
+    });
+
+    // edit subject
+    // $wrapper.find('#input_button > #edit_subject').on('click', function() {
+    //     //#region query selector
+    //     let $form = $(this).closest('form');
+    //     let $input_field = $form.find('input[type=text]');
+    //     let $select = $form.find('select');
+    //     //#endregion
+
+    //     let flag = true;
+    //     // trim input and check error
+    //     $input_field.each(function() {
+    //         $(this).val($(this).val().trim());
+
+    //         // check chuoi rong
+    //         if ($(this).val() == '') {
+    //             flag = false;
+    //             if ($(this).is('#subject_title')) {
+    //                 alert('Chưa nhập tên môn học cần sửa.');
+    //             }
+    //             if ($(this).is('#room_number')) {
+    //                 alert('Chưa nhập số phòng cần sửa.');
+    //             }
+    //         }
+    //     });
+        
+    //     // input is valid
+    //     if (flag) {
+    //         // get index of subject want to edit
+    //         flag = subjectExist(subjects, $input_field.filter('#subject_title').val());
+
+    //         // not exist
+    //         if (flag < 0) {
+    //             alert('Tên môn học không tồn tại.');
+    //             return;
+    //         }
+            
+    //         // create new time
+    //         let time = new Time();
+    //         time.setWeekday($select.filter('#week_day'));
+    //         time.setClass_start($select.filter('#class_start'));
+    //         time.setClass_end(time.getClass_start() + Number($select.filter('#duration').val()) - 1);
+
+    //         // nếu bị trùng lịch thì không sửa thành công
+    //         if(checkTrungLich(subjects, time)) {
+    //             alert(`Bị trùng lịch. Không sửa được môn ${$input_field.filter('#subject_title').val()}`);
+    //             return;
+    //         }
+
+
+    //     }
+
+    // });
     
+
+    // add event search box
+    $wrapper.find('#subject_title').on('input propertychange', function() {
+        let list_subject = '', $search_box = $(this).siblings('#search_box');
+        let $subject_title = $(this);
+        
+        for (let sub of subjects) {
+            if (sub.getSubject_title().substring(0, $(this).val().length) === $(this).val()) {
+                list_subject += `<li>${sub.getSubject_title()}</li>`
+            }
+        }
+
+        // remove click event if have any
+        $search_box.children().unbind('click');
+
+        // pour list subject to search_box
+        $search_box.html(list_subject);
+
+        // add click event for li
+        $search_box.children().on('click', function() {
+            $subject_title.val($(this).html());
+        });
+    });
+
+    // close search box
+    $wrapper.click(function() {
+        $(this)
+            .find('#search_box').children().unbind('click')
+            .parent().html('');
+    });
 });
