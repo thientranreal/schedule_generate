@@ -1,34 +1,34 @@
 //#region class definition
 class Time {
-    #weekday;
-    #class_start;
-    #class_end;
-    #room_number;
-    #is_show;
+    weekday;
+    class_start;
+    class_end;
+    room_number;
+    is_show;
 
     constructor() {
-        this.#weekday = 'N/A';
-        this.#class_start = 'N/A';
-        this.#class_end = 'N/A';
-        this.#room_number = 'N/A';
-        this.#is_show = false;
+        this.weekday = 'N/A';
+        this.class_start = 'N/A';
+        this.class_end = 'N/A';
+        this.room_number = 'N/A';
+        this.is_show = false;
     }
 
     //#region getter
     getWeekday() {
-        return this.#weekday;
+        return this.weekday;
     }
     getClass_start() {
-        return this.#class_start;
+        return this.class_start;
     }
     getClass_end() {
-        return this.#class_end;
+        return this.class_end;
     }
     getRoom_number() {
-        return this.#room_number;
+        return this.room_number;
     }
     getIs_show() {
-        return this.#is_show;
+        return this.is_show;
     }
     //#endregion
 
@@ -37,45 +37,45 @@ class Time {
         if (weekday < 2 || weekday > 8) {
             return false;
         }
-        this.#weekday = weekday;
+        this.weekday = weekday;
         return true;
     }
     setClass_start(class_start) {
         if (class_start < 1 || class_start > 10) {
             return false;
         }
-        this.#class_start = Number(class_start);
+        this.class_start = Number(class_start);
         return true;
     }
     setClass_end(class_end) {
         if (class_end < 1 || class_end > 10) {
             return false;
         }
-        this.#class_end = Number(class_end);
+        this.class_end = Number(class_end);
         return true;
     }
     setRoom_number(room_number) {
         if (room_number.trim() === '') {
             return false;
         }
-        this.#room_number = room_number;
+        this.room_number = room_number;
         return true;
     }
     setIs_show(value) {
         if (typeof value === "boolean") {
-            this.#is_show = value;
+            this.is_show = value;
         }
     }
     //#endregion
 }
 
 class Subject {
-    #subject_title;
-    #time_array;
+    subject_title;
+    time_array;
 
     constructor() {
-        this.#subject_title = 'N/A';
-        this.#time_array = [];
+        this.subject_title = 'N/A';
+        this.time_array = [];
     }
 
     //#region setter
@@ -83,7 +83,7 @@ class Subject {
         if (subject_title.trim() === '') {
             return false;
         }
-        this.#subject_title = subject_title;
+        this.subject_title = subject_title;
         return true;
     }
     setTime_array(time_array) {
@@ -93,27 +93,53 @@ class Subject {
                 return false;
             }
         }
-        this.#time_array = time_array;
+        this.time_array = time_array;
         return true;
     }
     //#endregion
 
     //#region getter
     getSubject_title() {
-        return this.#subject_title;
+        return this.subject_title;
     }
     getTime_array() {
-        return this.#time_array;
+        return this.time_array;
     }
     //#endregion
 
     addTime(time) {
-        this.#time_array.push(time);
+        this.time_array.push(time);
     }
 }
 //#endregion
 
 let subjects = [];
+
+if (localStorage.storedSubjects !== undefined) {
+
+    let tempo = JSON.parse(localStorage.storedSubjects);
+
+    let t1, t2, t;
+
+    for (let sub of tempo) {
+        // turn obj to Subject
+        t1 = new Subject();
+        Object.assign(t1, sub);
+        subjects.push(t1);
+
+        // turn obj to Time
+        t = [];
+        for (let time of subjects[subjects.length - 1].getTime_array()) {
+            t2 = new Time();
+            Object.assign(t2, time);
+            t2.setIs_show(false);
+            
+            t.push(t2);
+        }
+
+        subjects[subjects.length - 1].setTime_array(t);
+    }
+}
 
 $(document).ready(function() {
     let $wrapper = $('#wrapper');
@@ -223,6 +249,13 @@ $(document).ready(function() {
         }
     }
 
+    // make schedule from localStorage
+    if (subjects.length > 0) {
+        for (let sub of subjects) {
+            makeSchedule(sub.getTime_array(), sub.getSubject_title());
+        }
+    }
+
     // add click for thêm môn học
     $wrapper.find('#input_button > #add_subject').on('click', function() {
         //#region query selector
@@ -314,6 +347,9 @@ $(document).ready(function() {
 
         // Generate schedule
         makeSchedule(subjects[subjects.length - 1].getTime_array(), subjects[subjects.length - 1].getSubject_title());
+
+        // Save subjects to local storage
+        localStorage.storedSubjects = JSON.stringify(subjects);
     });
 
     // delete subject
@@ -340,6 +376,8 @@ $(document).ready(function() {
             // xóa phần tử mà tìm thấy
             subjects.splice(index, 1);
             alert('Xóa môn học thành công.');
+            // Save subjects to local storage
+            localStorage.storedSubjects = JSON.stringify(subjects);
         }
     });
 
@@ -420,10 +458,31 @@ $(document).ready(function() {
         });
     });
 
+    // add focus event for search box
+    $wrapper.find('#subject_title').on('click', function(e) {
+        e.stopPropagation();
+        let $search_box = $(this).siblings('#search_box'), $subject_title = $(this);
+        $search_box.show();
+
+        // if subject title is empty then show all list subject title
+        if ($search_box.html() === '' && $(this).val() === '') {
+            let list_subject = '';
+            for (let sub of subjects) {
+                list_subject += `<li>${sub.getSubject_title()}</li>`
+            }
+
+            // pour list subject to search_box
+            $search_box.html(list_subject);
+
+            // add click event for li
+            $search_box.children().on('click', function() {
+                $subject_title.val($(this).html());
+            });
+        }
+    });
+
     // close search box
     $wrapper.click(function() {
-        $(this)
-            .find('#search_box').children().unbind('click')
-            .parent().html('');
+        $(this).find('#search_box').hide();
     });
 });
